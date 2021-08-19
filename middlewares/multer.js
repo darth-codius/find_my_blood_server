@@ -22,8 +22,8 @@ exports.fileCatch = (req, res, next) => {
         if (err) {
             res.send(err)
         }else {
-            // console.log(req.file);
-            res.send("file uploaded successfully")
+            console.log(req.file);
+            // res.send("file uploaded successfully")
         }
     });
     console.log("got to this point");
