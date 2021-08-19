@@ -29,6 +29,8 @@ exports.createRequest = async (req, res, next){
         const requestedUnits = req.body.units;
         let requestingHospital = await Hospital.findById({ _id: req.params.id});
         requestingHospital = requestingHospital.name;
+        const status = "pending";
+        // const hospital = 
 
     } catch (error) {
         
