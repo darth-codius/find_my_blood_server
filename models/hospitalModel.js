@@ -18,7 +18,7 @@ const hospitalSchema = new mongoose.Schema({
         required: ['true', "Input your hospital's password"]
     },
     phoneNumber: {
-        type: Number,
+        type: String,
     },
     address: {
         type: String
@@ -29,7 +29,7 @@ const hospitalSchema = new mongoose.Schema({
     motto: {
         type: String
     },
-    logoUrl: {
+    logo: {
         type: String
     }
 
