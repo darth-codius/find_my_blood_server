@@ -1,8 +1,10 @@
 // Importing necessary modules, routes and functions.
 const express = require('express');
-const bloodRoutes = require('./routes/bloodRoute');
+const bodyParser = require('body-parser');
+const bloodRoute = require('./routes/bloodRoute');
 const hospitalRoute = require('./routes/hospitalRoute');
 const mongodb = require('./utils/db.js');
+
 
 // Declaring necessary variables.
 const PORT = process.env.PORT || 5000;
@@ -13,13 +15,17 @@ const cors = require('cors');
 
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("public/uploads/images"));
+
 
 // starting the database connection here wish was imported
 mongodb();
 
 app.use('/hospital', hospitalRoute)
+app.use('/hospital/blood', bloodRoute)
 app.get('/', (req, res) => {
-    res.send("Hello world")
+    res.send("<h1>Hello world</h1>");
 });
 
 app.listen(PORT, () => {

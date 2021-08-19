@@ -4,8 +4,10 @@ const bloodController = require('../controllers/bloodController')
 const auth = require('../middlewares/auth');
 
 
-// router.post('/add', auth , bloodController.addBlood);
-// router.delete('/del', auth, bloodController.deleteBlood);
+router.get('/', auth, bloodController.getAllBlood);
+router.post('/add', auth , bloodController.createBloodGroup);
+router.post('/edit/:id', auth , bloodController.updateBlood);
+
 
 
 
