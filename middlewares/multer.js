@@ -6,7 +6,7 @@ const multer = require('multer');
 
     // configurable  for multer
      const storage = multer.diskStorage({
-        destination : "./public/uploads/images",
+        destination : "./public/images",
         filename : function(req, file, cb){
             cb(null, file.fieldname + Date.now() + path.extname(file.originalname));
         }
@@ -22,11 +22,11 @@ exports.fileCatch = (req, res, next) => {
         if (err) {
             res.send(err)
         }else {
-            console.log(req.file);
+            res.send(req.file)
+            next();
             // res.send("file uploaded successfully")
         }
     });
-    console.log("got to this point");
     next();
 
 }
