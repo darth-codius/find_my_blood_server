@@ -21,6 +21,26 @@ exports.getAllBlood = async (req, res, next) => {
     next()
 }
 
+exports.searchBlood = async (req, res, next) => {
+    try {
+        const blood = await Blood.find({bloodGroup: req.body.bloodGroup})
+        
+        res.status(201).json({
+            status: 'success',
+            data: blood
+        })
+        
+    } catch(err) {
+        res.status(400).json({
+            status: 'fail',
+            error: err
+        })
+    }
+
+    next()
+}
+
+
 exports.createBloodGroup = async (req, res, next) => {
 console.log(req.hospital)
     try {

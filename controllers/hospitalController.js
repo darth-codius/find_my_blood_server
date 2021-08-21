@@ -56,12 +56,12 @@ exports.signup = async (req, res, next) => {
 }
 
 exports.update = async (req, res, next) => {
-    console.log('here');
-    console.log(req.file.path)
+    console.log(req.file)
     const {phoneNumber, address, state, motto} = req.body
     const logo = req.file.path
-
+    
     try {
+        
         const hospital = await Hospital.findByIdAndUpdate({ _id: req.params.id}, {
             phoneNumber,
             address,
@@ -137,7 +137,7 @@ exports.delete = async (req, res, next) => {
         });
         
         res.status(200).json({
-            status: 'successlly deleted',
+            status: 'successfully deleted',
             data: hospital
         });
         
@@ -168,5 +168,20 @@ exports.forgotPassword = async (req, res, next) => {
         res.status(400).json({
 
         })
+    }
+}
+
+exports.getHospital = async (req, res, next)=>{
+    const hospital = await Hospital.findById({ _id: req.params.id})
+    if (!hospital) {
+        res.status(401).json({
+            status: 'failed',
+            message: 'No Hospital found'
+        })
+    } else {
+        res.status(200).json({
+            status: 'successful',
+            data: hospital
+        });
     }
 }

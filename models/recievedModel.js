@@ -5,10 +5,9 @@ const mongoose = require('mongoose');
 
 // created the Schema for the recieved record using .Schema() method in the mongoose class object creator that's why its mongoose.Schema.
 const recievedSchema = new mongoose.Schema({
-    time: {
-        type: Date,
-        default: Date.now,
-        required: ['true'],
+    timeStamp: {
+        type: Number,
+        required: ['true']
     },
     blood: {
         type: String,
