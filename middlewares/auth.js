@@ -21,4 +21,21 @@ const auth = async (req, res, next) => {
     }
 }
 
-module.exports = auth;
+const idcheck = async (req, res, next) =>{
+    try {
+        const idHospital = req.hospital._id
+        if(req.params.id !== String(idHospital)) {
+            return res.status(401).json({
+                status: 'failed',
+                message: 'This user is not authorized'
+            });
+        }
+        next()
+    } catch (error) {
+        console.error(error);
+        res.status(401).json({
+            Status: 'Failed!'
+        })
+    }
+}
+module.exports = { auth, idcheck };

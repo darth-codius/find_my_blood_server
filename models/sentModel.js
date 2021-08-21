@@ -5,13 +5,21 @@ const mongoose = require('mongoose');
 
 // created the Schema for the sent record using .Schema() method in the mongoose class object creator that's why its mongoose.Schema.
 const sentSchema = new mongoose.Schema({
-    time: {
-        type: Date,
-        default: Date.now,
+    timeStamp: {
+        type: Number,
         required: ['true']
     },
     blood: {
-        type: mongoose.Schema.Types.ObjectId, ref: 'Blood'
+        type: String,
+        required: ['true']
+    },
+    requestedUnits: {
+        type: Number,
+        required: ['true']
+    },
+    requestingHospital: {
+        type: String,
+        required: ['true']
     },
     status: {
         type: String,
