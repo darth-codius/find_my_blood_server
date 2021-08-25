@@ -4,9 +4,9 @@ const bloodController = require('../controllers/bloodController')
 const {auth, idcheck} = require('../middlewares/auth');
 
 
-router.get('/', auth, bloodController.getAllBlood);
+router.get('/all', auth, bloodController.getAllBlood);
 router.post('/add', auth, bloodController.createBloodGroup);
-router.post('/edit/:id', auth, idcheck, bloodController.updateBlood);
+router.post('/edit/:id', auth, bloodController.updateBlood);
 router.post('/search', auth, bloodController.searchBlood);
 
 
