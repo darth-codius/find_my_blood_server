@@ -5,6 +5,7 @@ const bloodRoute = require('./routes/bloodRoute');
 const hospitalRoute = require('./routes/hospitalRoute');
 const requestRoute = require('./routes/requestRoute');
 const mongodb = require('./utils/db.js');
+const path = require('path');
 
 
 // Declaring necessary variables.
@@ -17,7 +18,8 @@ const cors = require('cors');
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/public',express.static("images"));
+// express.static(root,[options]);
+app.use('/',express.static('public'));
 
 
 // starting the database connection here wish was imported
@@ -25,7 +27,7 @@ mongodb();
 
 app.use('/hospital', hospitalRoute);
 app.use('/hospital/blood', bloodRoute);
-app.use('', requestRoute)
+app.use('/hospital/request', requestRoute)
 app.get('/', (req, res) => {
     res.send("<h1>Hello world</h1>");
 });

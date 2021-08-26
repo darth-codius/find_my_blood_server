@@ -36,22 +36,23 @@ const sentSchema = new mongoose.Schema({
 {
     toJSON: { virtuals: true},
     toObject: { virtuals: true}
-});
+}
+);
 
-// populate the sentSchema
-sentSchema.pre(/^find/, function (next) {
-    this.populate({
-        path: 'blood',
-        select: 'bloodGroup units hospital'
-    });
+// // populate the sentSchema
+// sentSchema.pre(/^find/, function (next) {
+//     this.populate({
+//         path: 'blood',
+//         select: 'bloodGroup units hospital'
+//     });
 
-    this.populate({
-        path: 'hospital',
-        select: 'name state address'
-    });
+//     this.populate({
+//         path: 'hospital',
+//         select: 'name state address'
+//     });
 
-    next();
-});
+//     next();
+// });
 
 
 // creates the sent record using the mongoose model() method which takes in the name of the model and the Schema(in our case sentSchema)

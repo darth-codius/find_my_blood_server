@@ -2,9 +2,13 @@
 const mongoose = require('mongoose');
 const Blood = require('../models/bloodModel.js');
 
+// Controller for getting list of all owned blood by a particular hospital.
 exports.getAllBlood = async (req, res, next) => {
+     console.log("got here");
+     console.log(req.hospital._id);
     try {
-        const blood = await Blood.find({hospital: req.hospital._id})
+       
+        const blood = await Blood.find({hospital: req.hospital._id});
         
         res.status(201).json({
             status: 'success',
@@ -40,13 +44,13 @@ exports.searchBlood = async (req, res, next) => {
     next()
 }
 
-
+// controller for creating a new blood group.
 exports.createBloodGroup = async (req, res, next) => {
 console.log(req.hospital)
     try {
 
         // input validation product
-        let checkBlood = await Blood.findOne({ bloodGroup: req.body.bloodGroup})
+        let checkBlood = await Blood.findOne({ bloodGroup: req.body.bloodGroup, hospital: req.hospital._id})
         // check exists
         if (checkBlood){
             res.status(401).json({
@@ -73,6 +77,7 @@ console.log(req.hospital)
     next()
 }
 
+// controller for updating blood, including adding to existing blood
 exports.updateBlood = async (req, res, next) => {
 
     try {

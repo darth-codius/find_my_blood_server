@@ -36,7 +36,7 @@ exports.signup = async (req, res, next) => {
 
         // nodemailer function goes here.
         console.log(req.body.name, req.body.email);
-        signUpMailer( req.body.name, req.body.email);
+        signUpMailer( String(req.body.name), String(req.body.email));
 
         res.status(201).json({
             status: 'success',
@@ -55,8 +55,8 @@ exports.signup = async (req, res, next) => {
     next()
 }
 
+// controller for updating an hospital's details including uploading of logo.
 exports.update = async (req, res, next) => {
-    console.log(req.file)
     const {phoneNumber, address, state, motto} = req.body
     const logo = req.file.path
     
@@ -88,6 +88,7 @@ exports.update = async (req, res, next) => {
     next()
 }
 
+// controller for login in and this generates to jwt token.
 exports.signin = async (req, res, next) => {
 
     try {
@@ -130,6 +131,7 @@ exports.signin = async (req, res, next) => {
     next();
 }
 
+// controller for deleting an hospital's account.
 exports.delete = async (req, res, next) => {
     try {
         const hospital = await Hospital.findByIdAndDelete({ _id: req.params.id}, {
@@ -162,6 +164,7 @@ exports.forgotPassword = async (req, res, next) => {
             })
         }else {
           let code = Math.floor(Math.random() * 1000000)   
+          
         }
         
     } catch (err) {
