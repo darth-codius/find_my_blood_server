@@ -12,6 +12,7 @@ exports.getAllBlood = async (req, res, next) => {
         
         res.status(201).json({
             status: 'success',
+            message: 'Your blood units',
             data: blood
         })
         
@@ -31,6 +32,7 @@ exports.searchBlood = async (req, res, next) => {
         
         res.status(201).json({
             status: 'success',
+            message: 'Found blood units',
             data: blood
         })
         
@@ -54,7 +56,8 @@ console.log(req.hospital)
         // check exists
         if (checkBlood){
             res.status(401).json({
-                status: 'That blood group already exists',
+                status: 'fail',
+                message: 'That blood group already exists',
                 data: checkBlood
             })
         }
@@ -62,7 +65,8 @@ console.log(req.hospital)
             const blood = await Blood.create({...req.body, hospital: req.hospital._id})
             
             res.status(201).json({
-                status: 'successfully created',
+                status: "success",
+                message: 'successfully created',
                 data: blood
             })
         }
@@ -85,6 +89,7 @@ exports.updateBlood = async (req, res, next) => {
         
         res.status(200).json({
             status: 'success',
+            message: 'Updated blood',
             data: blood
         })
         

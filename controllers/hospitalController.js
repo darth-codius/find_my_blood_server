@@ -20,7 +20,8 @@ exports.signup = async (req, res, next) => {
         else if(checkEmail){
             return res.status(401).json({
                 status: 'failed',
-                message: 'email already exists'
+                message: 'email already exists',
+                data: null
             })
         }else{
         // hash password
@@ -40,8 +41,8 @@ exports.signup = async (req, res, next) => {
 
         res.status(201).json({
             status: 'success',
-            data: hospital,
-            message: 'An email has been sent to your given email address'
+            message: 'An email has been sent to your given email address',
+            data: hospital
         })}
         
     } catch(err) {
@@ -75,6 +76,7 @@ exports.update = async (req, res, next) => {
         
         res.status(200).json({
             status: 'success',
+            message: 'Successfully updated details',
             data: hospital
         })
         
@@ -96,8 +98,9 @@ exports.signin = async (req, res, next) => {
         if (!checkEmail){
             console.log(checkEmail)
             res.status(401).json({
-                status: 'failed',
-                message: 'No user with that email was found'
+                status: 'fail',
+                message: 'No user with that email was found',
+                data: null
             })
 
         }
@@ -108,6 +111,7 @@ exports.signin = async (req, res, next) => {
             token = jwt.sign( checkEmail.email, process.env.SECRET_KEY)
             res.status(201).json({
                 status: 'success',
+                message: 'Your token has been created successfully',
                 token,
                 data: checkEmail
             });
@@ -116,12 +120,12 @@ exports.signin = async (req, res, next) => {
             console.log(req.body.password + " " + checkEmail.password);
             res.status(400).json({
                 status: 'fail',
-                message: 'Wrong password'
+                message: 'Wrong password',
+                data: null
             });
          } 
         }
-         catch(err) {
-             console.log(err);
+    catch(err) {
         res.status(400).json({
             status: 'fail',
             error: err
@@ -139,7 +143,8 @@ exports.delete = async (req, res, next) => {
         });
         
         res.status(200).json({
-            status: 'successfully deleted',
+            status: 'success',
+            message: 'successfully deleted',
             data: hospital
         });
         
@@ -159,8 +164,9 @@ exports.forgotPassword = async (req, res, next) => {
         if (!checkEmail){
             console.log(checkEmail)
             res.status(401).json({
-                status: 'failed',
-                message: 'No user with that email was found'
+                status: 'fail',
+                message: 'No user with that email was found',
+                data: null
             })
         }else {
           let code = Math.floor(Math.random() * 1000000)   
@@ -174,16 +180,20 @@ exports.forgotPassword = async (req, res, next) => {
     }
 }
 
+
+// This is the controller for get a particular hospital's details.
 exports.getHospital = async (req, res, next)=>{
     const hospital = await Hospital.findById({ _id: req.params.id})
     if (!hospital) {
         res.status(401).json({
             status: 'failed',
-            message: 'No Hospital found'
+            message: 'No Hospital found',
+            data: null
         })
     } else {
         res.status(200).json({
             status: 'successful',
+            message: 'Your hospital details',
             data: hospital
         });
     }
