@@ -20,7 +20,7 @@ exports.signUpMailer = (name, email) => {
         port: 465,
         secure: true, // true for 465, false for other ports
         auth: {
-            user: "erhijotajonah25@yandex.com",
+            user: "erhijotajonah25@gmail.com",
             password: "Jonah4575@",
         }
     });

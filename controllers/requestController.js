@@ -16,8 +16,8 @@ exports.getAllrecords = async (req, res, next) => {
         
         res.status(201).json({
             status: 'success',
-            sentRequest: sent,
-            recievedRequest: recieved
+            message: 'These are your records',
+            data: {sentRequest: sent, recievedRequest: recieved}
 
         });
         
@@ -52,7 +52,8 @@ exports.createRequest = async (req, res, next)=>{
         });
             
             res.status(201).json({
-                status: 'Request sent',
+                status: 'success',
+                message: 'Request sent',
                 data: blood
             });
 
@@ -78,10 +79,9 @@ exports.requestAction = async (req, res, next)=>{
 
         if ((request.requestedUnits > bloodOwned.units) && (action === "accepted")) {
             res.status(409).json({ 
-                status: "Failed",
+                status: "fail",
                 message: "You do not have sufficient Units of the requested Blood Group",
-                bloodOwned,
-                requestedUnits: request
+                data: {bloodOwned, requestedUnits: request}
             });
         } 
         if ((request.requestedUnits < bloodOwned.units) && (action === "accepted")){
@@ -96,9 +96,9 @@ exports.requestAction = async (req, res, next)=>{
                 { new: true } );
                 bloodOwned.units -= request.requestedUnits  
                 res.status(200).json({
-                    status: "Success",
+                    status: "success",
                     message: 'Request has been ACCEPTED',
-                    request
+                    data: request
                 });
 
         }
@@ -113,9 +113,9 @@ exports.requestAction = async (req, res, next)=>{
                 {status: action}, 
                 { new: true } );
                 res.status(200).json({
-                    status: "Success",
+                    status: "success",
                     message: 'Request has been REJECTED',
-                    request
+                    data: request
                 });
         }
 
