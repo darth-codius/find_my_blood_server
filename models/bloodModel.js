@@ -27,7 +27,7 @@ const bloodSchema = new mongoose.Schema({
 bloodSchema.pre(/^find/, function (next) {
     this.populate({
         path: 'hospital',
-        select: 'name state address'
+        select: '_id name state address'
     })
 
     next()

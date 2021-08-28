@@ -20,13 +20,13 @@ exports.signUpMailer = (name, email) => {
         port: 465,
         secure: true, // true for 465, false for other ports
         auth: {
-            user: "enejijonathan@gmail.com",
-            password: "1996@gmail.com",
+            user: "erhijotajonah25@gmail.com",
+            password: "Jonah4575@",
         }
     });
     // setup email data with unicode symbols
     let mailOptions = {
-        from: "enejijonathan@gmail.com",// sender address
+        from: `"Find-My-Blood" <enejijonathan@gmail.com>`,// sender address
         to: `${email}`,// list of recievedRequest
         subject: "Find My Blood Sign-up notification",//
         text: `Welcome ${name}, Your account has been created`,// subject

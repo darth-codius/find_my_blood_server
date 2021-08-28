@@ -36,22 +36,8 @@ const recievedSchema = new mongoose.Schema({
 {
     toJSON: { virtuals: true},
     toObject: { virtuals: true}
-});
-
-// populate the recievedSchema
-recievedSchema.pre(/^find/, function (next) {
-    this.populate({
-        path: 'blood',
-        select: 'bloodGroup units hospital'
-    });
-
-    this.populate({
-        path: 'hospital',
-        select: 'name state address'
-    });
-
-    next();
-});
+}
+);
 
 
 // creates the recieved record using the mongoose model() method which takes in the name of the model and the Schema(in our case userSchema)

@@ -1,19 +1,23 @@
-const mongoose = require('mongoose');
+// This is the controller for handling requests from hospitals.
 
 const Sent = require('../models/sentModel');
 const Recieved = require('../models/recievedModel');
 const Hospital = require('../models/hospitalModel');
 const Blood = require('../models/bloodModel');
 
+
+// controller for getting a list of request records made.
 exports.getAllrecords = async (req, res, next) => {
     try {
-        const recieved = await Recieved.find({hospital: req.hospital._id})
+        console.log(req.body.hospital);
+        const recieved = await Recieved.find({requestingHospital: req.body.hospital})
         const sent = await Sent.find({hospital: req.hospital._id})
+        
         
         res.status(201).json({
             status: 'success',
-            sentRequest: sent,
-            recievedRequest: recieved
+            message: 'These are your records',
+            data: {sentRequest: sent, recievedRequest: recieved}
 
         });
         
@@ -27,6 +31,7 @@ exports.getAllrecords = async (req, res, next) => {
     next();
 }
 
+// controller for creating a new request.
 exports.createRequest = async (req, res, next)=>{
     try {
         const requestedUnits = req.body.units;
@@ -47,38 +52,43 @@ exports.createRequest = async (req, res, next)=>{
         });
             
             res.status(201).json({
-                status: 'Request sent',
+                status: 'success',
+                message: 'Request sent',
                 data: blood
             });
 
     } catch (error) {
         res.status(400).json({
             status: 'fail',
-            error: err
+            error: error
         });
     }
     next();
 }
 
-
+// controllers for accepting or rejecting a request.
 exports.requestAction = async (req, res, next)=>{
     
     try {
         const action = req.body.action;
-        const request = await Recieved.findById({ _id: req.body.id });
+        console.log(action);
+        const request = await Sent.findById({ _id: req.body.id });
+        console.log(request.timeStamp);
         const bloodOwned = await Blood.findOne({ bloodGroup: req.body.bloodGroup, hospital: req.hospital._id});
+        console.log(bloodOwned.units);
 
         if ((request.requestedUnits > bloodOwned.units) && (action === "accepted")) {
             res.status(409).json({ 
-                message: "You do not have sufficient Units of the requested Blood Group"
+                status: "fail",
+                message: "You do not have sufficient Units of the requested Blood Group",
+                data: {bloodOwned, requestedUnits: request}
             });
         } 
         if ((request.requestedUnits < bloodOwned.units) && (action === "accepted")){
-            await Recieved.findByIdAndUpdate({ _id: req.body.id }, {status: action}, { new: true } );
-            await Sent.findOneAndUpdate(
+            await Sent.findByIdAndUpdate({ _id: req.body.id }, {status: action}, { new: true } );
+            await Recieved.findOneAndUpdate(
                 { 
                     timeStamp : request.timeStamp,
-                    name:  request.requestingHospital , 
                     requestedUnits:  request.requestedUnits,
                     blood: request.blood,
                 }, 
@@ -86,30 +96,33 @@ exports.requestAction = async (req, res, next)=>{
                 { new: true } );
                 bloodOwned.units -= request.requestedUnits  
                 res.status(200).json({
-                    message: 'Request has been ACCEPTED'
+                    status: "success",
+                    message: 'Request has been ACCEPTED',
+                    data: request
                 });
 
         }
         if((request.requestedUnits < bloodOwned.units) && (action === "rejected")){
-            await Recieved.findByIdAndUpdate({ _id: req.body.id }, {status: action}, { new: true } );
-            await Sent.findOneAndUpdate(
+            await Sent.findByIdAndUpdate({ _id: req.body.id }, {status: action}, { new: true } );
+            await Recieved.findOneAndUpdate(
                 { 
                     timeStamp : request.timeStamp,
-                    name:  request.requestingHospital , 
                     requestedUnits:  request.requestedUnits,
                     blood: request.blood,
                 }, 
                 {status: action}, 
                 { new: true } );
                 res.status(200).json({
-                    message: 'Request has been REJECTED'
+                    status: "success",
+                    message: 'Request has been REJECTED',
+                    data: request
                 });
         }
 
     } catch (error) {
         res.status(400).json({
             status: 'fail',
-            error: err
+            error: error
         });
     }
     next();
