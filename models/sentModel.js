@@ -39,20 +39,15 @@ const sentSchema = new mongoose.Schema({
 }
 );
 
-// // populate the sentSchema
-// sentSchema.pre(/^find/, function (next) {
-//     this.populate({
-//         path: 'blood',
-//         select: 'bloodGroup units hospital'
-//     });
 
-//     this.populate({
-//         path: 'hospital',
-//         select: 'name state address'
-//     });
+sentSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: 'hospital',
+        select: '_id name state address'
+    })
 
-//     next();
-// });
+    next();
+});
 
 
 // creates the sent record using the mongoose model() method which takes in the name of the model and the Schema(in our case sentSchema)
