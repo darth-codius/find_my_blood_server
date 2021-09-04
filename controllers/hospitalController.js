@@ -59,7 +59,7 @@ exports.signup = async (req, res, next) => {
 // controller for updating an hospital's details including uploading of logo.
 exports.update = async (req, res, next) => {
     const {phoneNumber, address, state, motto} = req.body
-    const logo = req.file.path
+    const logo = `https://find-my-blood.herokuapp.com/${req.file.filename}`;
     
     try {
         

@@ -39,6 +39,14 @@ const recievedSchema = new mongoose.Schema({
 }
 );
 
+recievedSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: 'hospital',
+        select: '_id name state address'
+    });
+
+    next();
+});
 
 // creates the recieved record using the mongoose model() method which takes in the name of the model and the Schema(in our case userSchema)
 const Recieved = mongoose.model('Recieved', recievedSchema);
