@@ -39,9 +39,10 @@ exports.createRequest = async (req, res, next)=>{
         let requestingHospital = requestingHospitalObj.name;
         const status = "accepted";
         const blood = req.body.bloodGroup;
-        let hospitalsBlood = await Blood.findOne({ bloodGroup: blood, hospital: requestingHospitalObj._id})
+        let bloodId = req.body.id;
+        let hospitalsBlood = await Blood.findById({ _id : bloodId});
         const stamp = Date.now();  // To be used for identifying the pair in both sent and recieved database document.
-        if (blood > hospitalsBlood.units) {
+        if (requestedUnits > hospitalsBlood.units) {
             res.status(409).json({ 
                 status: "fail",
                 message: "Your Father!, how will you request for more blood than I have?",
@@ -49,8 +50,8 @@ exports.createRequest = async (req, res, next)=>{
             });
         } else {
                 // Deducting the blood units from the blood in the hospitals bank.
-                let deductBlood = hospitalsBlood.units - blood;
-                let hospitalsNewBlood = await Blood.findOneAndUpdate({ bloodGroup: blood, hospital: requestingHospitalObj._id}, { units: deductBlood}, { new: true });
+                let deductBlood = hospitalsBlood.units - requestedUnits;
+                let hospitalsNewBlood = await Blood.findByIdAndUpdate({_id : bloodId}, { units: deductBlood}, { new: true });
                 // This creates the database record for sent requests.
                 const request = await Sent.create({
                     timeStamp: stamp, requestedUnits, requestingHospital, status, blood, hospital: req.hospital._id
@@ -69,6 +70,7 @@ exports.createRequest = async (req, res, next)=>{
         }
 
     } catch (error) {
+        console.log(error);
         res.status(400).json({
             status: 'fail',
             error: error
